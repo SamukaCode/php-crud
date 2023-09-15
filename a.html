@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Carros</title>
+    <!-- Link para o CSS do Semantic UI hospedado no CDN -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    
+    <!-- Link para o jQuery hospedado no CDN -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    
+    <!-- Link para o JavaScript do Semantic UI hospedado no CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+</head>
+
+<body>
+    <div class="eleven wide column" style="margin-top: 30px">
+        <div style="max-height: 65vh; overflow-y: auto">
+          <table class="ui compact celled definition table">
+            <thead>
+              <tr>
+                <td class="collapsing">
+                  <div class="ui fitted checkbox">
+                    <input type="checkbox" id="select-all" />
+                    <label></label>
+                  </div>
+                </td>
+                <th>Placa</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Kilometragem</th>
+                <th>Imagem</th>
+              </tr>
+            </thead>
+            <tbody id="carro-table-body"></tbody>
+          </table>
+        </div>
+        <div class="bg-table">
+          <div class="ui grid">
+            <div class="sixteen wide column">
+              <div class="ui right floated small button bg-button" id="add-carro">
+                Adicionar Carro
+              </div>
+              <div class="ui left floated small button bg-button" id="del-carro-btn">
+                Excluir
+              </div>
+              <div class="ui left floated small button bg-button" id="upd-carro-btn">
+                Alterar
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dimmer">
+    <div class="ui container add-form">
+      <h2 class="ui dividing header">Adicionar Carro</h2>
+      <form class="ui form" id="form">
+        <div class="ui two column grid">
+          <div class="column">
+            <div class="field">
+              <label>Código</label>
+              <input type="text" name="codigo" placeholder="Código do Carro" class="campo required" id="codigo"
+                @input="codigoValidate" />
+              <span class="span-required">Insira o código do Carro</span>
+            </div>
+            <div class="field">
+              <label>Bancada</label>
+              <select name="tipo" class="campo required" id="bancada" @change="bancadaValidate">
+                <option selected value="selecione" disabled>Selecione uma bancada...</option>
+              </select>
+              <span class="span-required">Selecione 1 Bancada</span>
+            </div>
+            <div class="field">
+              <label>Tipo</label>
+              <select name="tipo" class="campo required" id="tipo" @change="tipoValidate">
+                <option class="placeholder" disabled selected>Selecione o tipo</option>
+                <option value="Desktop">Desktop</option>
+                <option value="Notebook">Notebook</option>
+                <option value="Impressora">Impressora</option>
+                <option value="Monitor">Monitor</option>
+              </select>
+              <span class="span-required">Selecione um tipo</span>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label>Marca</label>
+              <input type="text" name="marca" placeholder="Marca" class="campo required" id="marca"
+                @input="marcaValidate" />
+              <span class="span-required">Insira a Marca</span>
+            </div>
+            <div class="field">
+              <label>Modelo</label>
+              <input type="text" name="modelo" placeholder="Modelo" class="campo required" id="modelo"
+                @input="modeloValidate" />
+              <span class="span-required">Insira o Modelo</span>
+            </div>
+            <div class="field">
+              <label>Status</label>
+              <select name="status" class="campo required" id="status" @change="statusValidate">
+                <option class="placeholder" disabled selected>Selecione o status</option>
+                <option value="Ativo">Ativo</option>
+                <option value="Inativo">Inativo</option>
+                <option value="Manutenção">Em manutenção</option>
+              </select>
+              <span class="span-required">Selecione o Status</span>
+            </div>
+            <button class="ui submit button" type="submit" id="submit-carro">
+              Adicionar
+            </button>
+            <button class="ui submit button" type="submit" id="upd-carro">Atualizar</button>
+            <button class="ui button cancel-button" id="cancel-button">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+<script>
+    const selectCheckboxes = document.getElementsByClassName('select-checkbox')
+    const selectAllCheckbox = document.getElementById('select-all')
+
+    // Selecione todos os checkboxes quando o checkbox geral é selecionado
+    selectAllCheckbox.addEventListener('click', function () {
+      for (var i = 0; i < selectCheckboxes.length; i++) {
+        selectCheckboxes[i].checked = this.checked
+      }
+    })
+
+    // Faz o dimmer aparecer ao clicar no botão "Adicionar Carro" e desaparecer ao clicar fora do pop-up.
+    // eslint-disable-next-line no-undef
+
+    //Cadastrar
+    $(document).ready(function () {
+      // eslint-disable-next-line no-undef
+      $('#add-carro').click(function (e) {
+        const esconder = document.querySelector('#upd-carro')
+        esconder.style.display = 'none'
+
+        const aparecer1 = document.querySelector('#submit-carro')
+        aparecer1.style.display = 'inline'
+        e.preventDefault()
+        $('.ui.dividing.header').text('Cadastrar Carro')
+        $('#submit-carro').text('Adicionar')
+        $('.dimmer').fadeIn()
+
+        const selectedRow = $(this).closest('tr')
+
+        const selectedFields = selectedRow.find('td').slice(1, 7)
+
+        const formFields = $('#form input, #form select')
+        formFields.eq(0).prop('readonly', false).val(selectedFields.eq(0).text().trim())
+        formFields.eq(1).val(selectedFields.eq(0).text().trim())
+        formFields.eq(2).val(selectedFields.eq(0).text().trim())
+        formFields.eq(3).val(selectedFields.eq(0).text().trim())
+        formFields.eq(4).val(selectedFields.eq(0).text().trim())
+        formFields.eq(5).val(selectedFields.eq(0).text().trim())
+      })
+
+      $('.cancel-button').click(function () {
+        $('.popup').hide()
+        $('.dimmer').hide()
+      })
+      // eslint-disable-next-line no-undef
+      $('.dimmer').click(function (e) {
+        // eslint-disable-next-line no-undef
+        if ($(e.target).hasClass('dimmer')) {
+          $(this).fadeOut()
+        }
+      })
+    })
+
+</script>
+
+</html>
