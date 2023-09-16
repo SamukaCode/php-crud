@@ -67,14 +67,16 @@
 
     if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         //inserindo dados
-        $ra = $_POST["ra"];
-        $nome = $_POST["nome"];
-        $curso = $_POST["curso"];
+        $placa = $_POST["placa"];
+        $marca = $_POST["marca"];
+        $modelo = $_POST["modelo"];
+        $kilometragem = $_POST["kilometragem"];
+        $imagem = $_POST["imagem"];
 
-        if ((trim($ra) == "") || (trim($nome) == "")) {
-            echo "<span id='warning'>RA e nome são obrigatórios!</span>";
+        if ((trim($placa) == "") || (trim($marca) == "")) {
+            echo "<span id='warning'>placa e marca são obrigatórios!</span>";
         } else {
-            cadastrar($ra, $nome, $curso);
+            cadastrar($placa, $marca, $modelo, $kilometragem, $imagem);
         }
     }
 ?>

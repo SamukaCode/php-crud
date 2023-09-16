@@ -19,14 +19,14 @@
 
 include("bd.php");
 
-if (!isset($_POST["raAluno"])) {
-    echo "Selecione o aluno a ser editado!";
+if (!isset($_POST["Placa"])) {
+    echo "Selecione o carro a ser editado!";
 } else {
-    $ra = $_POST["raAluno"];
+    $ra = $_POST["Placa"];
 
     try {
 
-        $stmt = buscarEdicao($ra);
+        $stmt = buscarEdicao($placa);
 
         $edificacoes = "";
         $enfermagem = "";

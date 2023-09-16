@@ -38,11 +38,13 @@
 
              while ($row = $stmt->fetch()) {
                  echo "<tr>";
-                 echo "<td><input type='radio' name='raAluno' 
-                      value='" . $row['ra'] . "'>";
-                 echo "<td>" . $row['ra'] . "</td>";
-                 echo "<td>" . $row['nome'] . "</td>";
-                 echo "<td>" . $row['curso'] . "</td>";
+                 echo "<td><input type='radio' name='Placa' 
+                      value='" . $row['placa'] . "'>";
+                 echo "<td>" . $row['placa'] . "</td>";
+                 echo "<td>" . $row['marca'] . "</td>";
+                 echo "<td>" . $row['modelo'] . "</td>";
+                 echo "<td>" . $row['kilometragem'] . "</td>";
+                 echo "<td>" . $row['imagem'] . "</td>";
                  echo "</tr>";
              }
 

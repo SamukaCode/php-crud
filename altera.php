@@ -19,10 +19,12 @@
 
     include("bd.php");
 
-    $ra = $_POST['ra'];
-    $novoNome = $_POST['nome'];
-    $novoCurso = $_POST['curso'];
+    $placa = $_POST["placa"];
+    $marca = $_POST["marca"];
+    $modelo = $_POST["modelo"];
+    $kilometragem = $_POST["kilometragem"];
+    $imagem = $_POST["imagem"];
 
-    alterar($ra, $novoNome, $novoCurso);
+    alterar($placa, $marca, $modelo, $kilometragem, $imagem);
 
 ?>

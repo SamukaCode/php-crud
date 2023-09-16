@@ -6,20 +6,22 @@
         return $pdo;
     }
 
-    function cadastrar($ra, $nome, $curso) {
+    function cadastrar($placa, $marca, $modelo, $kilometragem, $imagem) {
         try {
             $pdo = conectarBD();
-            $rows = verificarCadastro($ra, $pdo);
+            $rows = verificarCadastro($placa, $pdo);
 
             if ($rows <= 0) {
-                $stmt = $pdo->prepare("insert into alunos (ra, nome, curso) values(:ra, :nome, :curso)");
-                $stmt->bindParam(':ra', $ra);
-                $stmt->bindParam(':nome', $nome);
-                $stmt->bindParam(':curso', $curso);
+                $stmt = $pdo->prepare("insert into carros (placa, marca, modelo, kilometragem, imagem) values(:placa, :marca, :modelo, :kilometragem, :imagem )");
+                $stmt->bindParam(':placa', $placa);
+                $stmt->bindParam(':marca', $marca);
+                $stmt->bindParam(':modelo', $modelo);
+                $stmt->bindParam(':kilometragem', $kilometragem);
+                $stmt->bindParam(':imagem', $imagem);
                 $stmt->execute();
-                echo "<span id='sucess'>Aluno Cadastrado!</span>";
+                echo "<span id='sucess'>Carro Cadastrado!</span>";
             } else {
-                echo "<span id='error'>Ra já existente!</span>";
+                echo "<span id='error'>Placa já existente!</span>";
             }
         } catch(PDOException $e) {
             echo 'Error: ' . $e->getMessage();
@@ -27,10 +29,10 @@
     }
 
 
-    function verificarCadastro($ra, $pdo) {
+    function verificarCadastro($placa, $pdo) {
         //verificando se o RA informado já existe no BD para não dar exception
-        $stmt = $pdo->prepare("select * from alunos where ra = :ra");
-        $stmt->bindParam(':ra', $ra);
+        $stmt = $pdo->prepare("select * from carros where placa = :placa");
+        $stmt->bindParam(':placa', $placa);
         $stmt->execute();
 
         $rows = $stmt->rowCount();
@@ -39,12 +41,12 @@
 
     function consultar() {
         $pdo = conectarBD();
-        if (isset($_POST["ra"]) && ($_POST["ra"] != "")) {
-            $ra = $_POST["ra"];
-            $stmt = $pdo->prepare("select * from alunos where ra= :ra order by curso, nome");
-            $stmt->bindParam(':ra', $ra);
+        if (isset($_POST["placa"]) && ($_POST["placa"] != "")) {
+            $placa = $_POST["placa"];
+            $stmt = $pdo->prepare("select * from carros where placa= :placa");
+            $stmt->bindParam(':placa', $placa);
         } else {
-            $stmt = $pdo->prepare("select * from alunos order by curso, nome");
+            $stmt = $pdo->prepare("select * from carros");
         }
 
         $stmt->execute();
@@ -52,38 +54,40 @@
         return $stmt;
     }
 
-    function buscarEdicao($ra) {
+    function buscarEdicao($placa) {
         $pdo = conectarBD();
-        $stmt = $pdo->prepare('select * from alunos where ra = :ra');
-        $stmt->bindParam(':ra', $ra);
+        $stmt = $pdo->prepare('select * from carros where placa = :placa');
+        $stmt->bindParam(':placa', $placa);
         $stmt->execute();
         return $stmt;
     }
 
-    function alterar($ra, $novoNome, $novoCurso) {
+    function alterar($placa, $novoMarca, $novoModelo, $novoKilometragem, $novoImagem) {
         try {
             $pdo = conectarBD();
-            $stmt = $pdo->prepare('UPDATE alunos SET nome = :novoNome, curso = :novoCurso WHERE ra = :ra');
-            $stmt->bindParam(':novoNome', $novoNome);
-            $stmt->bindParam(':novoCurso', $novoCurso);
-            $stmt->bindParam(':ra', $ra);
+            $stmt = $pdo->prepare('UPDATE carros SET marca = :novoMarca, modelo = :novoModelo, kilometragem = :novoKilometragem, imagem = :novoImagem WHERE placa = :placa');
+            $stmt->bindParam(':novoMarca', $novoMarca);
+            $stmt->bindParam(':novoModelo', $novoModelo);
+            $stmt->bindParam(':novoKilometragem', $novoKilometragem);
+            $stmt->bindParam(':novoImagem', $novoImagem);
+            $stmt->bindParam(':placa', $placa);
             $stmt->execute();
 
-            echo "Os dados do aluno de RA $ra foram alterados!";
+            echo "Os dados do carro $novoModelo da placa $placa foram alterados!";
 
         } catch (PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
     }
 
-    function excluir($ra) {
+    function excluir($placa) {
         try {
             $pdo = conectarBD();
-            $stmt = $pdo->prepare('DELETE FROM alunos WHERE ra = :ra');
-            $stmt->bindParam(':ra', $ra);
+            $stmt = $pdo->prepare('DELETE FROM carros WHERE placa = :placa');
+            $stmt->bindParam(':placa', $placa);
             $stmt->execute();
 
-            echo $stmt->rowCount() . " aluno de RA $ra removido!";
+            echo $stmt->rowCount() . " Carro da placa: $placa removido!";
 
         } catch (PDOException $e) {
             echo 'Error: ' . $e->getMessage();

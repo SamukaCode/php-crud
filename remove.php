@@ -19,11 +19,11 @@
 
 include("bd.php");
 
-if (!isset($_POST["raAluno"])) {
-    echo "Selecione o aluno a ser excluído!";
+if (!isset($_POST["Placa"])) {
+    echo "Selecione o carro a ser excluído!";
 } else {
-    $ra = $_POST["raAluno"];
-    excluir($ra);
+    $ra = $_POST["Placa"];
+    excluir($placa);
 }
 
 ?>
