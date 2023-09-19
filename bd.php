@@ -1,36 +1,42 @@
 <?php
 
     function conectarBD() {
-        $pdo = new PDO("mysql:host=localhost;dbname=simone;charset=utf8", "root", "");
+        $pdo = new PDO("mysql:host=143.106.241.3;dbname=cl201275;charset=utf8", "cl201275", "cl*28092005");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $pdo;
     }
 
-    function cadastrar($placa, $marca, $modelo, $kilometragem, $imagem) {
+    function cadastrar($placa, $marca, $modelo, $quilometragem, $imagem) {
         try {
             $pdo = conectarBD();
             $rows = verificarCadastro($placa, $pdo);
-
+    
             if ($rows <= 0) {
-                $stmt = $pdo->prepare("insert into carros (placa, marca, modelo, kilometragem, imagem) values(:placa, :marca, :modelo, :kilometragem, :imagem )");
+                // Renomear a imagem com a placa
+                $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
+                $imagemNome = "archive/" . $placa . "." . $extensao;
+    
+                // Mover a imagem para a pasta "archive"
+                move_uploaded_file($_FILES['imagem']['tmp_name'], $imagemNome);
+    
+                $stmt = $pdo->prepare("INSERT INTO carros (placa, marca, modelo, quilometragem, imagem) VALUES (:placa, :marca, :modelo, :quilometragem, :imagem)");
                 $stmt->bindParam(':placa', $placa);
                 $stmt->bindParam(':marca', $marca);
                 $stmt->bindParam(':modelo', $modelo);
-                $stmt->bindParam(':kilometragem', $kilometragem);
-                $stmt->bindParam(':imagem', $imagem);
+                $stmt->bindParam(':quilometragem', $quilometragem);
+                $stmt->bindParam(':imagem', $imagemNome);
                 $stmt->execute();
-                echo "<span id='sucess'>Carro Cadastrado!</span>";
+                echo "<span id='success'>Carro Cadastrado!</span>";
             } else {
-                echo "<span id='error'>Placa já existente!</span>";
+                echo "<span id='error'>Placa já existente!</span><br>";
             }
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
     }
-
+    
 
     function verificarCadastro($placa, $pdo) {
-        //verificando se o RA informado já existe no BD para não dar exception
         $stmt = $pdo->prepare("select * from carros where placa = :placa");
         $stmt->bindParam(':placa', $placa);
         $stmt->execute();
@@ -65,7 +71,7 @@
     function alterar($placa, $novoMarca, $novoModelo, $novoKilometragem, $novoImagem) {
         try {
             $pdo = conectarBD();
-            $stmt = $pdo->prepare('UPDATE carros SET marca = :novoMarca, modelo = :novoModelo, kilometragem = :novoKilometragem, imagem = :novoImagem WHERE placa = :placa');
+            $stmt = $pdo->prepare('UPDATE carros SET marca = :novoMarca, modelo = :novoModelo, quilometragem = :novoKilometragem, imagem = :novoImagem WHERE placa = :placa');
             $stmt->bindParam(':novoMarca', $novoMarca);
             $stmt->bindParam(':novoModelo', $novoModelo);
             $stmt->bindParam(':novoKilometragem', $novoKilometragem);
@@ -93,5 +99,25 @@
             echo 'Error: ' . $e->getMessage();
         }
     }
+
+    function contarCarrosPorMarca($marca) {
+        $conexao = conectarBD(); // Suponhamos que conectarBD() retorna uma conexão PDO válida
+        $sql = "SELECT COUNT(*) as total FROM carros WHERE marca = :marca";
+        $stmt = $conexao->prepare($sql);
+        $stmt->bindParam(':marca', $marca, PDO::PARAM_STR);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'];
+    }
+
+    function contarCarros() {
+        $conexao = conectarBD(); // Suponhamos que conectarBD() retorna uma conexão PDO válida
+        $sql = "SELECT COUNT(*) as total FROM carros";
+        $stmt = $conexao->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'];
+    }
+    
 
     ?>
