@@ -16,7 +16,7 @@
 
                 var reader = new FileReader();
 
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     $('.image-upload-wrap').hide();
 
                     $('.file-upload-image').attr('src', e.target.result);
@@ -37,10 +37,10 @@
             $('.file-upload-content').hide();
             $('.image-upload-wrap').show();
         }
-        $('.image-upload-wrap').bind('dragover', function () {
+        $('.image-upload-wrap').bind('dragover', function() {
             $('.image-upload-wrap').addClass('image-dropping');
         });
-        $('.image-upload-wrap').bind('dragleave', function () {
+        $('.image-upload-wrap').bind('dragleave', function() {
             $('.image-upload-wrap').removeClass('image-dropping');
         });
     </script>
@@ -48,30 +48,31 @@
         <i class="fas fa-car icon"></i>
         <h1>Cadastro de Carros</h1>
         <form method="post" class="car-form" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="placa">Placa:</label><br>
-                <input type="text" id="placa" name="placa">
+            <div class="form__group field">
+                <input type="text" class="form__field" placeholder="Placa" required="" id="placa" name="placa">
+                <label for="placa" class="form__label">Placa</label>
             </div>
-            <br>
-            <div class="form-group">
-                <label for="marca">Marca:</label><br>
-                <input type="text" id="marca" name="marca">
+
+            <div class="form__group field">
+                <input type="text" class="form__field" placeholder="Marca" required="" id="marca" name="marca">
+                <label for="marca" class="form__label">Marca</label>
             </div>
-            <br>
-            <div class="form-group">
-                <label for="modelo">Modelo:</label><br>
-                <input type="text" id="modelo" name="modelo">
+
+            <div class="form__group field">
+                <input type="text" class="form__field" placeholder="Modelo" required="" id="modelo" name="modelo">
+                <label for="modelo" class="form__label">Modelo</label>
             </div>
-            <br>
-            <div class="form-group">
-                <label for="quilometragem">Quilometragem:</label><br>
-                <input type="text" id="quilometragem" name="quilometragem">
+
+            <div class="form__group field">
+                <input type="text" class="form__field" placeholder="Quilometragem" required="" id="quilometragem" name="quilometragem">
+                <label for="quilometragem" class="form__label">Quilometragem</label>
             </div>
+
             <br>
             <div class="form-group">
                 <label for="imagem">Imagem:</label>
                 <div class="image-upload-wrap">
-                    <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" name="imagem"/>
+                    <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" name="imagem" />
                     <div class="drag-text">
                         <h4>Arraste e solte ou adicione uma imagem</h4>
                     </div>
@@ -79,8 +80,7 @@
                 <div class="file-upload-content">
                     <img class="file-upload-image" src="#" alt="your image" />
                     <div class="image-title-wrap">
-                        <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
-                                class="image-title">Uploaded Image</span></button>
+                        <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
             } else {
                 $imagem_nome = $_FILES["imagem"]["name"]; // Obtenha o nome original da imagem
                 $extensao = pathinfo($imagem_nome, PATHINFO_EXTENSION); // Obtenha a extensão do arquivo
-        
+
                 // Renomeie a imagem com a placa e a extensão
                 $novo_nome_imagem = "archive/{$placa}." . $extensao;
 
@@ -113,7 +113,6 @@
                     echo "<span id='error'>Falha ao enviar a imagem!</span><br>";
                 }
             }
-
         }
         ?>
 

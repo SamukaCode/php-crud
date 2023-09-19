@@ -27,9 +27,9 @@ $totalVolkswagen = contarCarrosPorMarca('Volkswagen');
         <h1>Controle de Carros</h1>
         <h2>Gerencie seus veículos de forma eficiente</h2>
         <form>
-            <input type="button" value="Cadastrar" onclick="window.open('cadastrar.php', '_top');">
+            <input type="button" value="Cadastrar" onclick="window.open('cadastrar.php', '_top');" class="btn-submit">
             <br><br>
-            <input type="button" value="Consultar" onclick="window.open('consultar.php', '_top');">
+            <input type="button" value="Consultar" onclick="window.open('consultar.php', '_top');" class="btn-submit">
         </form>
     </div>
 

@@ -10,40 +10,47 @@
         <i class="fas fa-car icon"></i>
         <h1>Consulta de Carros</h1>
         <form method="post">
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="placa">Placa:</label><br>
                 <input type="text" id="placa" name="placa">
+            </div> -->
+            <div class="form__group field">
+                <input type="text" class="form__field" placeholder="Placa" required="" id="placa" name="placa">
+                <label for="placa" class="form__label">Placa</label>
             </div>
             <br>
-            <input type="submit" value="Consultar" class="btn-submit">
+            <input type="submit" name="consultar" value="Consultar" class="btn-submit">
+            <input type="submit" name="excluirCarro" value="Excluir Carro" class="btn-submit">
         </form>
         <?php
         include("bd.php");
 
         if ($_SERVER["REQUEST_METHOD"] === 'POST') {
             try {
-                $stmt = consultar();
+                if (isset($_POST["consultar"])) {
+                    $stmt = consultar();
+                    echo "<form method='post'><table border='1px'>";
+                    echo "<tr><th></th><th>Placa</th><th>Marca</th><th>Modelo</th><th>Quilometragem</th><th>Imagem</th></tr>";
 
-                echo "<form method='post'><table border='1px'>";
-                echo "<tr><th></th><th>Placa</th><th>Marca</th><th>Modelo</th><th>Quilometragem</th><th>Imagem</th></tr>";
+                    while ($row = $stmt->fetch()) {
+                        echo "<tr>";
+                        echo "<td><input type='radio' name='Placa' value='" . $row['placa'] . "'></td>";
+                        echo "<td>" . $row['placa'] . "</td>";
+                        echo "<td>" . $row['marca'] . "</td>";
+                        echo "<td>" . $row['modelo'] . "</td>";
+                        echo "<td>" . $row['quilometragem'] . "</td>";
+                        echo "<td><img src='" . $row['imagem'] . "' width='100' height='100'></td>";
+                        echo "</tr>";
+                    }
 
-                while ($row = $stmt->fetch()) {
-                    echo "<tr>";
-                    echo "<td><input type='radio' name='Placa' value='" . $row['placa'] . "'></td>";
-                    echo "<td>" . $row['placa'] . "</td>";
-                    echo "<td>" . $row['marca'] . "</td>";
-                    echo "<td>" . $row['modelo'] . "</td>";
-                    echo "<td>" . $row['quilometragem'] . "</td>";
-                    echo "<td><img src='" . $row['imagem'] . "' width='100' height='100'></td>";
-                    echo "</tr>";
+                    echo "</table><br>";
+
+                } elseif (isset($_POST["excluirCarro"])) {
+                    $placa = $_POST["placa"];
+                    excluir($placa);
+                    // Exibição de uma mensagem de sucesso ou erro após a exclusão
+                    echo "<span id='success'>Carro excluído com sucesso!</span>";
                 }
-
-                echo "</table><br>
-             
-             <button type='submit' formaction='excluir.php'>Excluir Carro</button>
-             <button type='submit' formaction='editar.php'>Editar Carro</button>
-             
-             </form>";
 
             } catch (PDOException $e) {
                 echo 'Error: ' . $e->getMessage();
