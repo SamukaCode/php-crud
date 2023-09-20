@@ -2,9 +2,9 @@
 include('bd.php');
 
 $totalCarros = contarCarros();
-$totalFiat = contarCarrosPorMarca('Fiat'); 
-$totalHonda = contarCarrosPorMarca('Honda'); 
-$totalChevrolet = contarCarrosPorMarca('Chevrolet'); 
+$totalFiat = contarCarrosPorMarca('Fiat');
+$totalHonda = contarCarrosPorMarca('Honda');
+$totalChevrolet = contarCarrosPorMarca('Chevrolet');
 $totalVolkswagen = contarCarrosPorMarca('Volkswagen');
 
 ?>
@@ -17,7 +17,9 @@ $totalVolkswagen = contarCarrosPorMarca('Volkswagen');
     <title>Controle de Carros</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+    <link rel="icon" href="icon.png" type="image/png">
+
+
 </head>
 
 <body>
@@ -51,7 +53,7 @@ $totalVolkswagen = contarCarrosPorMarca('Volkswagen');
         <div class="info-item">
             <label>Total de Carros da Honda:</label>
             <span>
-              <?php echo $totalHonda; ?>
+                <?php echo $totalHonda; ?>
             </span>
         </div>
     </div>
@@ -59,7 +61,7 @@ $totalVolkswagen = contarCarrosPorMarca('Volkswagen');
         <div class="info-item">
             <label>Total de Carros da Chevrolet:</label>
             <span>
-                 <?php echo $totalChevrolet; ?>
+                <?php echo $totalChevrolet; ?>
             </span>
         </div>
         <div class="info-item">
@@ -71,4 +73,5 @@ $totalVolkswagen = contarCarrosPorMarca('Volkswagen');
     </div>
 
 </body>
+
 </html>
