@@ -16,12 +16,6 @@ Certifique-se de que seu ambiente de desenvolvimento atenda aos seguintes requis
 - Servidor web (por exemplo, Apache) com PHP 7.0 ou superior.
 - MySQL ou outro sistema de gerenciamento de banco de dados compatível.
 
-## Configuração
-
-1. Clone o repositório para o seu ambiente de desenvolvimento:
-
-   ```bash
-   git clone https://github.com/seu-usuario/crud-carros-php.git
 
 ## Autores
 
